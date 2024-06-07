@@ -1,3 +1,28 @@
+
+# JackeyLea:
+
+## This is the SSD branch of Qengineering/caffe
+
+Modified for CUDA 12.3 ,cuDNN 8, Python3.10
+- data/VOC0712/create_data.sh
+- examples/ssd/plot_detections.py
+- examples/ssd/score_ssd_pascal.py
+- examples/ssd/ssd_detect.py
+- examples/ssd/ssd_pascal_video.py
+- examples/ssd/ssd_pascal_webcam.py
+- examples/ssd/ssd_pascal.py
+- python/caffe/model_libs.py
+- src/caffe/util/math_functions.cpp
+- src/caffe/util/sampler.cpp
+
+Add custom Makefile.config for Ubuntu 22.04
+
+## Env
+
+- install cuda 12.3
+- install cudnn 8.x for cuda 12.x
+- install python3-opencv
+
 # Q-engineering:
 ## This is the SSD branch of weiliu89/caffe 
 Modified for OpenCV 4, cuDNN 8 and Python3:
