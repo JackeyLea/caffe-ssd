@@ -34,7 +34,7 @@ def get_labelname(labelmap, labels):
 
 def showResults(img_file, results, labelmap=None, threshold=None, display=None):
     if not os.path.exists(img_file):
-        print "{} does not exist".format(img_file)
+        print("{} does not exist".format(img_file))
         return
     img = io.imread(img_file)
     plt.clf()
@@ -90,7 +90,7 @@ if __name__ == "__main__":
     result_file = args.resultfile
     img_dir = args.imgdir
     if not os.path.exists(img_dir):
-        print "{} does not exist".format(img_dir)
+        print("{} does not exist".format(img_dir))
         sys.exit()
     labelmap_file = args.labelmap_file
     labelmap = None

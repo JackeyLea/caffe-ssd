@@ -8,6 +8,7 @@ import os
 import sys
 import argparse
 import numpy as np
+import cv2
 from PIL import Image, ImageDraw
 # Make sure that caffe is on the python path:
 caffe_root = './'
@@ -26,7 +27,7 @@ def get_labelname(labelmap, labels):
         labels = [labels]
     for label in labels:
         found = False
-        for i in xrange(0, num_labels):
+        for i in range(0, num_labels):
             if label == labelmap.item[i].label:
                 found = True
                 labelnames.append(labelmap.item[i].display_name)
@@ -65,7 +66,10 @@ class CaffeDetection:
         # set net to batch size of 1
         # image_resize = 300
         self.net.blobs['data'].reshape(1, 3, self.image_resize, self.image_resize)
-        image = caffe.io.load_image(image_file)
+        #image = caffe.io.load_image(image_file)
+        image = cv2.imread(image_file)
+        image = cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+        image = image/255
 
         #Run the net and examine the top_k results
         transformed_image = self.transformer.preprocess('data', image)
@@ -94,7 +98,7 @@ class CaffeDetection:
         top_ymax = det_ymax[top_indices]
 
         result = []
-        for i in xrange(min(topn, top_conf.shape[0])):
+        for i in range(min(topn, top_conf.shape[0])):
             xmin = top_xmin[i] # xmin = int(round(top_xmin[i] * image.shape[1]))
             ymin = top_ymin[i] # ymin = int(round(top_ymin[i] * image.shape[0]))
             xmax = top_xmax[i] # xmax = int(round(top_xmax[i] * image.shape[1]))
@@ -111,12 +115,12 @@ def main(args):
                                args.model_def, args.model_weights,
                                args.image_resize, args.labelmap_file)
     result = detection.detect(args.image_file)
-    print result
+    print(result)
 
     img = Image.open(args.image_file)
     draw = ImageDraw.Draw(img)
     width, height = img.size
-    print width, height
+    print(width, height)
     for item in result:
         xmin = int(round(item[0] * width))
         ymin = int(round(item[1] * height))
@@ -124,9 +128,9 @@ def main(args):
         ymax = int(round(item[3] * height))
         draw.rectangle([xmin, ymin, xmax, ymax], outline=(255, 0, 0))
         draw.text([xmin, ymin], item[-1] + str(item[-2]), (0, 0, 255))
-        print item
-        print [xmin, ymin, xmax, ymax]
-        print [xmin, ymin], item[-1]
+        print(item)
+        print([xmin, ymin, xmax, ymax])
+        print([xmin, ymin], item[-1])
     img.save('detect_result.jpg')
 
 
